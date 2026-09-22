@@ -23,22 +23,16 @@ public class LoginTest {
 
     @BeforeMethod
     public void setUp() {
-
         WebDriverManager.chromedriver().setup();
 
         driver = new ChromeDriver();
-
         driver.manage().window().maximize();
 
-        wait = new WebDriverWait(
-                driver,
-                Duration.ofSeconds(10)
-        );
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-
         if (driver != null) {
             driver.quit();
         }
@@ -47,9 +41,7 @@ public class LoginTest {
     @Test
     public void successfulLoginTest() {
 
-        driver.get(
-                "https://the-internet.herokuapp.com/login"
-        );
+        driver.get("https://the-internet.herokuapp.com/login");
 
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
@@ -72,19 +64,22 @@ public class LoginTest {
         ).getText();
 
         Assert.assertTrue(
-                message.contains(
-                        "You logged into a secure area!"
-                ),
+                message.contains("You logged into a secure area!"),
                 "Ошибка: успешный вход не выполнен"
+        );
+
+        Assert.assertTrue(
+                driver.findElement(
+                        By.cssSelector("a.button.secondary.radius")
+                ).isDisplayed(),
+                "Ошибка: кнопка Logout не отображается"
         );
     }
 
     @Test
     public void invalidPasswordTest() {
 
-        driver.get(
-                "https://the-internet.herokuapp.com/login"
-        );
+        driver.get("https://the-internet.herokuapp.com/login");
 
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
@@ -107,9 +102,7 @@ public class LoginTest {
         ).getText();
 
         Assert.assertTrue(
-                message.contains(
-                        "Your password is invalid!"
-                ),
+                message.contains("Your password is invalid!"),
                 "Ошибка: сообщение о неверном пароле не появилось"
         );
     }
